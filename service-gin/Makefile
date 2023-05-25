@@ -1,13 +1,8 @@
 #!make
--include .env
+include .env
 export
 
-ifeq (, $(shell which go))
-    $(error "Please install Go: https://golang.org/doc/install")
-endif
-
-.DEFAULT_GOAL := help
-.PHONY: help
+include ../Makefile
 
 bench: ## Run benchmarks.
 	go test -bench ./...
@@ -28,9 +23,6 @@ cover-report: ## Generate test coverage report.
 format: ## Format the source code.
 	go fmt ./...
 
-help: # https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' Makefile | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
-
 install: ## Download modules and install dependencies.
 	go mod download
 	go mod verify
@@ -46,31 +38,7 @@ run: build ## Run the main application.
 	go run .
 
 run-dev: ## Run with live reload.
-	gin --port ${PORT} --immediate run main.go
+	gin --port $(PORT) --immediate run main.go
 
-shell: ## Start a Go REPL (https://github.com/x-motemen/gore).
+shell: ## Start a Go REPL.
 	gore -autoimport
-
-#  ____             _             
-# |  _ \  ___   ___| | _____ _ __ 
-# | | | |/ _ \ / __| |/ / _ \ '__|
-# | |_| | (_) | (__|   <  __/ |   
-# |____/ \___/ \___|_|\_\___|_|   
-
-IMAGE := shipyarr/service-gin
-VERSION := latest
-
-docker-debug: ## Debug the running container.
-	docker exec -ti $(shell docker ps | grep $(IMAGE):$(VERSION) | awk '{print $$1}') /bin/sh
-
-docker-image: ## Build the Docker image.
-	docker build --rm=true -t $(IMAGE):$(VERSION) .
-
-docker-run: ## Run a detached container.
-	docker run --restart=always -p $(PORT):$(PORT) -d $(IMAGE):$(VERSION)
-
-docker-run-shell: ## Run an interactive container.
-	docker run -p $(PORT):$(PORT) -ti $(IMAGE):$(VERSION) /bin/sh
-
-docker-stop: ## Stop the detached container.
-	docker stop $(shell docker ps | grep $(IMAGE):$(VERSION) | awk '{print $$1}')

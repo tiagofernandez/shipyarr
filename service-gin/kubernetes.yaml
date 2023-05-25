@@ -1,0 +1,41 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-gin
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: service-gin
+  template:
+    metadata:
+      labels:
+        app: service-gin
+    spec:
+      containers:
+        - name: service-gin
+          image: shipyarr/service-gin:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 6060
+          resources:
+            limits:
+              cpu: "1"
+              memory: 512Mi
+            requests:
+              cpu: "0.2"
+              memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-gin
+spec:
+  selector:
+    app: service-gin
+  ports:
+    - protocol: TCP
+      port: 6060
+      targetPort: 6060
+  type: LoadBalancer
