@@ -2,11 +2,11 @@
 .editorconfig
 .gitignore
 
+app-gin
 cover.out
 Dockerfile
 gin-bin
 kubernetes.yaml
 Makefile
 README.md
-service-gin
 tools.go

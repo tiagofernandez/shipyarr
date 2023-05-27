@@ -1,4 +1,4 @@
-module service-gin
+module app-gin
 
 go 1.20
 

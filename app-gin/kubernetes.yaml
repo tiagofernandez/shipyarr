@@ -2,23 +2,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: service-flask
+  name: app-gin
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: service-flask
+      app: app-gin
   template:
     metadata:
       labels:
-        app: service-flask
+        app: app-gin
     spec:
       containers:
-        - name: service-flask
-          image: shipyarr/service-flask:latest
+        - name: app-gin
+          image: shipyarr/app-gin:latest
           imagePullPolicy: Never
           ports:
-            - containerPort: 6061
+            - containerPort: 6060
           resources:
             limits:
               cpu: "1"
@@ -30,12 +30,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: service-flask
+  name: app-gin
 spec:
   selector:
-    app: service-flask
+    app: app-gin
   ports:
     - protocol: TCP
-      port: 6061
-      targetPort: 6061
+      port: 6060
+      targetPort: 6060
   type: LoadBalancer

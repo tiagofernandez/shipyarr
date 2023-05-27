@@ -27,7 +27,7 @@ lint: ## Run lint inspections.
 test: ## Run unit tests.
 	pytest
 
-run: ## Run the main application. TODO: WSGI ?
+run: ## Run the main application.
 	flask --app wsgi run --host=0.0.0.0 --port=$(PORT)
 
 run-dev: ## Run the development server in debug mode.
