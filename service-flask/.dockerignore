@@ -1,0 +1,17 @@
+.coverage
+.dockerignore
+.editorconfig
+.envrc
+.gitignore
+.pytest_cache/
+.python-version
+.ruff_cache/
+
+__pycache__/
+htmlcov/
+Dockerfile
+kubernetes.yaml
+Makefile
+pyproject.toml
+README.md
+venv/

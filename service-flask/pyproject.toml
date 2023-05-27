@@ -1,0 +1,18 @@
+# https://black.readthedocs.io/en/stable/usage_and_configuration/the_basics.html#configuration-format
+[tool.black]
+line-length = 100
+include = '\.pyi?$'
+exclude = '''
+/(
+  \.git
+  | venv
+)/
+'''
+
+# https://beta.ruff.rs/docs/configuration/#using-pyprojecttoml
+[tool.ruff]
+ignore = ["E501"]
+line-length = 100
+
+# https://beta.ruff.rs/docs/rules/
+select = ["A", "ARG", "B", "BLE", "E", "F", "FLY", "RET"]

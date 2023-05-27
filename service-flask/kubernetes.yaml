@@ -1,0 +1,41 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-flask
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: service-flask
+  template:
+    metadata:
+      labels:
+        app: service-flask
+    spec:
+      containers:
+        - name: service-flask
+          image: shipyarr/service-flask:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 6061
+          resources:
+            limits:
+              cpu: "1"
+              memory: 512Mi
+            requests:
+              cpu: "0.2"
+              memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-flask
+spec:
+  selector:
+    app: service-flask
+  ports:
+    - protocol: TCP
+      port: 6061
+      targetPort: 6061
+  type: LoadBalancer

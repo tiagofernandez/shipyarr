@@ -1,8 +1,11 @@
 .dockerignore
+.editorconfig
 .gitignore
+
 cover.out
 Dockerfile
 gin-bin
+kubernetes.yaml
 Makefile
 README.md
 service-gin

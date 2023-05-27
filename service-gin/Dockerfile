@@ -1,5 +1,5 @@
 # https://hub.docker.com/_/golang
-FROM golang:1.20-alpine
+FROM golang:1.20
 
 ADD . /app
 WORKDIR /app

@@ -16,7 +16,7 @@ IMAGE := $(NAMESPACE)/$(APP)
 VERSION := latest
 
 docker-build: ## Build the Docker image.
-	docker build --rm=true -t $(IMAGE):$(VERSION) .
+	docker build -t $(IMAGE):$(VERSION) .
 
 docker-debug: ## Debug the running container.
 	docker exec -ti $(shell docker ps | grep $(IMAGE):$(VERSION) | awk '{print $$1}') /bin/sh
