@@ -19,13 +19,12 @@ spec:
           imagePullPolicy: Never
           ports:
             - containerPort: 6061
+              name: http
           resources:
             limits:
               cpu: "1"
               memory: 512Mi
-            requests:
-              cpu: "0.2"
-              memory: 256Mi
+
 ---
 apiVersion: v1
 kind: Service
@@ -35,7 +34,26 @@ spec:
   selector:
     app: app-flask
   ports:
-    - protocol: TCP
-      port: 6061
-      targetPort: 6061
+    - name: http
+      port: 80
+      targetPort: http
   type: LoadBalancer
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-flask
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: app-flask.home.arpa
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: app-flask
+            port:
+              name: http

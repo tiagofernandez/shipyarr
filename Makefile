@@ -46,8 +46,16 @@ k8s-delete: ## Delete the applied configuration.
 	kubectl delete -f kubernetes.yaml -n $(NAMESPACE)
 	kubectl delete namespace $(NAMESPACE)
 
+k8s-ingress: ## Deploy Ingress controller.
+	kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.7.1/deploy/static/provider/cloud/deploy.yaml
+	kubectl wait --namespace ingress-nginx --for=condition=ready pod --selector=app.kubernetes.io/component=controller --timeout=120s
+
+k8s-ingress-host: ## Append host to /etc/hosts, if not present.
+	$(eval ENTRY := '127.0.0.1 $(APP).home.arpa')
+	sudo -- sh -c -e "grep -qxF $(ENTRY) /etc/hosts || echo $(ENTRY) >> /etc/hosts"
+
 k8s-namespace: ## Create Kubernetes namespace.
 	kubectl create namespace $(NAMESPACE) --dry-run=client -o yaml | kubectl apply -f -
 
 k8s-port-forward: ## Forward connection to local port.
-	kubectl port-forward service/$(APP) $(PORT):$(PORT) -n $(NAMESPACE)
+	kubectl port-forward service/$(APP) $(PORT):80 -n $(NAMESPACE)

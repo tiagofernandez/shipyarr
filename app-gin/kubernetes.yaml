@@ -19,13 +19,12 @@ spec:
           imagePullPolicy: Never
           ports:
             - containerPort: 6060
+              name: http
           resources:
             limits:
               cpu: "1"
               memory: 512Mi
-            requests:
-              cpu: "0.2"
-              memory: 256Mi
+
 ---
 apiVersion: v1
 kind: Service
@@ -35,7 +34,26 @@ spec:
   selector:
     app: app-gin
   ports:
-    - protocol: TCP
-      port: 6060
-      targetPort: 6060
+    - name: http
+      port: 80
+      targetPort: http
   type: LoadBalancer
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-gin
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: app-gin.home.arpa
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: app-gin
+            port:
+              name: http
