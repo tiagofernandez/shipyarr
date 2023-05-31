@@ -1,0 +1,33 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: virtual-host
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: app-flask.home.arpa
+      http:
+        paths:
+          - path: "/"
+            pathType: Prefix
+            backend:
+              service:
+                name: app-flask
+                port:
+                  name: http
+    - host: app-gin.home.arpa
+      http:
+        paths:
+          - path: "/"
+            pathType: Prefix
+            backend:
+              service:
+                name: app-gin
+                port:
+                  name: http
+  tls:
+    - hosts:
+        - app-flask.home.arpa
+        - app-gin.home.arpa
+      secretName: tls-cert

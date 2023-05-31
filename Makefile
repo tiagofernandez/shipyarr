@@ -45,7 +45,7 @@ k8s-debug: ## Debug the running service.
 k8s-delete: ## Delete the applied configuration.
 	kubectl delete -f kubernetes.yaml -n $(NAMESPACE)
 
-k8s-ingress: ## Deploy Ingress controller.
+k8s-ingress: ## Deploy an Ingress controller.
 	kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.7.1/deploy/static/provider/cloud/deploy.yaml
 	kubectl wait --namespace ingress-nginx --for=condition=ready pod --selector=app.kubernetes.io/component=controller --timeout=120s
 
