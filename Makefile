@@ -44,7 +44,6 @@ k8s-debug: ## Debug the running service.
 
 k8s-delete: ## Delete the applied configuration.
 	kubectl delete -f kubernetes.yaml -n $(NAMESPACE)
-	kubectl delete namespace $(NAMESPACE)
 
 k8s-ingress: ## Deploy Ingress controller.
 	kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.7.1/deploy/static/provider/cloud/deploy.yaml
